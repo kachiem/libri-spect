@@ -1,4 +1,4 @@
-from deepspectrograminversion.features.spectrogram import slicing_window, spect_maker
+from librispect.features.spectrogram import slicing_window, spect_maker
 
 class spect_predict_maker:
     def __init__(self, hparams, terms=4, predict_terms=4, step_size=1):
