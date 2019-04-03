@@ -1,1 +1,1 @@
-from deepspectrograminversion import paths
+from librispect import paths
