@@ -21,7 +21,7 @@ def to_wav(extracted_dir, destination_dir):
     for path in glob.glob(extracted_dir + "/**/*.flac", recursive=True):
         print("generating file...")
         flac_file = path
-        seq_id = os.path.split(path)[-1].split('.')[0]
+        seq_id = os.path.split(path)[-1].split(".")[0]
         wav_file = destination_dir + "/" + (seq_id + ".wav")
         if not os.path.exists(wav_file):
             print("forming wav file. ID: " + seq_id)
@@ -47,6 +47,7 @@ def conversion():
     for path in glob.glob(str(lspct.paths.RAW_DIR / "*.tar.gz")):
         extract(str(lspct.paths.FLAC_DIR), path)
     to_wav(str(lspct.paths.FLAC_DIR), str(lspct.paths.WAV_DIR))
+
 
 if __name__ == "__main__":
     conversion()

@@ -17,15 +17,23 @@ TEST_OTHER_URL = "http://www.openslr.org/resources/12/test-other.tar.gz"
 
 lspct.paths.RAW_DIR.mkdir(parents=True, exist_ok=True)
 
-URLS = [TRAIN_CLEAN_100_URL, TRAIN_CLEAN_360_URL, TRAIN_OTHER_500_URL,
-        DEV_CLEAN_URL, DEV_OTHER_URL, TEST_CLEAN_URL, TEST_OTHER_URL]
+URLS = [
+    TRAIN_CLEAN_100_URL,
+    TRAIN_CLEAN_360_URL,
+    TRAIN_OTHER_500_URL,
+    DEV_CLEAN_URL,
+    DEV_OTHER_URL,
+    TEST_CLEAN_URL,
+    TEST_OTHER_URL,
+]
 
 
 def download_urls(urls):
     for url in urls:
-        print('Downloading %s' % (url))
-        urllib.request.urlretrieve(url, lspct.paths.RAW_DIR / url.split('/')[-1])
-        print('Completed')
+        print("Downloading %s" % (url))
+        urllib.request.urlretrieve(url, lspct.paths.RAW_DIR / url.split("/")[-1])
+        print("Completed")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     download_urls(URLS)

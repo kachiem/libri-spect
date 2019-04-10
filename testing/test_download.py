@@ -7,5 +7,5 @@ def test_download():
     assert (lspct.paths.RAW_DIR / "dev-clean.tar.gz").is_file()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_download()

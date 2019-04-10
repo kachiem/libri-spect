@@ -6,6 +6,6 @@ RAW_DIR = DATA_DIR / "raw"
 WAV_DIR = DATA_DIR / "wav"
 FLAC_DIR = DATA_DIR / "flac"
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(PROJECT_DIR)
     print(RAW_DIR)
