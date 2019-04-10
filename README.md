@@ -6,6 +6,11 @@
 
 Utilities for downloading the librivox dataset and converting to spectrogram for use with keras fit_generator
 
+### Authors
+[MarvinT](https://github.com/MarvinT), [kachiem](https://github.com/kachiem), and [miz123](https://github.com/miz123)
+
+Under two [Halıcıoğlu Data Science Institute](https://datascience.ucsd.edu) Undergraduate Scholarships
+
 Project Organization
 ------------
 
