@@ -4,15 +4,13 @@ Extract the downloaded file and convert to .wav
 
 import os
 import tarfile
-import librispect as ls
+import librispect as lspct
 import glob
 from sox import Transformer
 import shutil
 
-import librispect as ls
-
-ls.paths.WAV_DIR.mkdir(parents=True, exist_ok=True)
-ls.paths.FLAC_DIR.mkdir(parents=True, exist_ok=True)
+lspct.paths.WAV_DIR.mkdir(parents=True, exist_ok=True)
+lspct.paths.FLAC_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def to_wav(extracted_dir, destination_dir):
@@ -34,7 +32,7 @@ def to_wav(extracted_dir, destination_dir):
 
 def delete_flacs():
     print("Start deleting flac files...")
-    shutil.rmtree(ls.paths.FLAC_DIR)
+    shutil.rmtree(lspct.paths.FLAC_DIR)
     print("DELETION COMPLETE")
 
 
@@ -46,9 +44,9 @@ def extract(destination, archive):
 
 def conversion():
     """This function runs extract and convert"""
-    for path in glob.glob(str(ls.paths.RAW_DIR / "*.tar.gz")):
-        extract(str(ls.paths.FLAC_DIR), path)
-    to_wav(str(ls.paths.FLAC_DIR), str(ls.paths.WAV_DIR))
+    for path in glob.glob(str(lspct.paths.RAW_DIR / "*.tar.gz")):
+        extract(str(lspct.paths.FLAC_DIR), path)
+    to_wav(str(lspct.paths.FLAC_DIR), str(lspct.paths.WAV_DIR))
 
 if __name__ == "__main__":
     conversion()

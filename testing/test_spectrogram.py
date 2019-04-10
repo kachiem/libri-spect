@@ -1,6 +1,6 @@
-from deepspectrograminversion.features import spectrogram
+from librispect.features import spectrogram
 import glob
-import deepspectrograminversion as dsi
+import librispect as lspct
 import librosa
 import numpy as np
 import pytest
@@ -8,8 +8,8 @@ import pytest
 
 def test_stft_to_wav():
     """testing the similarity between the original and reconstructed data"""
-    hparams = dsi.features.spectrogram.HPARAMS
-    wavfile = glob.glob((dsi.paths.WAV_DIR / '*.wav').as_posix())[0]
+    hparams = lspct.features.spectrogram.HPARAMS
+    wavfile = glob.glob((lspct.paths.WAV_DIR / '*.wav').as_posix())[0]
     data, hparams['sample_rate'] = librosa.load(wavfile)
     stft = spectrogram.wav_to_stft(data, hparams)
     reconstructed_data = spectrogram.stft_to_wav(stft, hparams)
@@ -21,8 +21,8 @@ def test_stft_to_wav():
 
 def test_mel_spectrogram():
     """test the mel sepctrogram"""
-    hparams = dsi.features.spectrogram.HPARAMS
-    wavfile = glob.glob((dsi.paths.WAV_DIR / '*.wav').as_posix())[0]
+    hparams = lspct.features.spectrogram.HPARAMS
+    wavfile = glob.glob((lspct.paths.WAV_DIR / '*.wav').as_posix())[0]
     data, hparams['sample_rate'] = librosa.load(wavfile)
     mel_basis = spectrogram.build_mel_basis(hparams)
     for pre in [True, False]:
@@ -38,11 +38,11 @@ def test_mel_spectrogram():
 def test_spect_iter():
     """test the spect_maker class with the diff
     between spect created by class and function"""
-    hparams = dsi.features.spectrogram.HPARAMS
-    wavfile = glob.glob((dsi.paths.WAV_DIR / '*.wav').as_posix())[0]
+    hparams = lspct.features.spectrogram.HPARAMS
+    wavfile = glob.glob((lspct.paths.WAV_DIR / '*.wav').as_posix())[0]
     data, hparams['sample_rate'] = librosa.load(wavfile)
     sm = spectrogram.spect_maker(hparams)
-    for spect, stft in sm.spect_iter(glob.glob((dsi.paths.WAV_DIR /
+    for spect, stft in sm.spect_iter(glob.glob((lspct.paths.WAV_DIR /
                                                 '*.wav').as_posix())[:25]):
         assert len(stft.shape) == 3, stft.shape
         assert stft.shape[0] == 2, stft.shape
@@ -53,12 +53,12 @@ def test_spect_iter():
 
 
 def test_mel_spect_iter():
-    hparams = dsi.features.spectrogram.HPARAMS
-    wavfile = glob.glob((dsi.paths.WAV_DIR / '*.wav').as_posix())[0]
+    hparams = lspct.features.spectrogram.HPARAMS
+    wavfile = glob.glob((lspct.paths.WAV_DIR / '*.wav').as_posix())[0]
     data, hparams['sample_rate'] = librosa.load(wavfile)
     sm = spectrogram.spect_maker(hparams)
     mel_basis = spectrogram.build_mel_basis(hparams)
-    for mspect, stft in sm.mel_spect_iter(glob.glob((dsi.paths.WAV_DIR /
+    for mspect, stft in sm.mel_spect_iter(glob.glob((lspct.paths.WAV_DIR /
                                                      '*.wav').as_posix())[:25]):
         assert len(stft.shape) == 3, stft.shape
         assert stft.shape[0] == 2, stft.shape
@@ -86,12 +86,12 @@ test_params = [
 
 @pytest.mark.parametrize("samples,window_size,step_size,batch_size", test_params)
 def test_batch_ss_iter(samples, window_size, step_size, batch_size):
-    hparams = dsi.features.spectrogram.HPARAMS
-    wavfile = glob.glob((dsi.paths.WAV_DIR / '*.wav').as_posix())[0]
+    hparams = lspct.features.spectrogram.HPARAMS
+    wavfile = glob.glob((lspct.paths.WAV_DIR / '*.wav').as_posix())[0]
     data, hparams['sample_rate'] = librosa.load(wavfile)
     sm = spectrogram.spect_maker(
         hparams, window_size=window_size, step_size=step_size)
-    path_list = glob.glob((dsi.paths.WAV_DIR / '*.wav').as_posix())
+    path_list = glob.glob((lspct.paths.WAV_DIR / '*.wav').as_posix())
     if samples:
         path_list = path_list[:samples]
     steps_per_epoch = sm.batch_ss_per_epoch(path_list, batch_size)

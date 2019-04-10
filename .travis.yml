@@ -1,0 +1,9 @@
+language: python
+python:
+  - "3.6"
+script:
+  - pytest --cov=librispect
+before_install:
+  - sudo apt-get install sox
+after_success:
+  - coveralls
