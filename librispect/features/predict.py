@@ -1,3 +1,4 @@
+import numpy as np
 from librispect.features.spectrogram import slicing_window, spect_maker
 
 
@@ -49,3 +50,4 @@ class spect_predict_maker:
                     yield [term_batch[idxs, ...], pterm_batch[idxs, ...]], labels[
                         idxs, ...
                     ]
+    
