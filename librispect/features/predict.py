@@ -50,4 +50,11 @@ class spect_predict_maker:
                     yield [term_batch[idxs, ...], pterm_batch[idxs, ...]], labels[
                         idxs, ...
                     ]
+
+    def split_validation(self, path_list, validation_percentage):
+        val_index = int(len(path_list) * (1 - validation_percentage))
+        val = path_list[val_index:]
+        training = path_list[0:(val_index - 1)]
+            
+        return training, val
     
