@@ -44,9 +44,10 @@ def extract(destination, archive):
 
 def conversion():
     """This function runs extract and convert"""
-    for path in glob.glob(str(lspct.paths.RAW_DIR / "*.tar.gz")):
-        extract(str(lspct.paths.FLAC_DIR), path)
-    to_wav(str(lspct.paths.FLAC_DIR), str(lspct.paths.WAV_DIR))
+    if lspct.paths.FLAC_DIR != True:
+        for path in glob.glob(str(lspct.paths.RAW_DIR / "*.tar.gz")):
+            extract(str(lspct.paths.FLAC_DIR), path)
+        to_wav(str(lspct.paths.FLAC_DIR), str(lspct.paths.WAV_DIR))
 
 
 if __name__ == "__main__":

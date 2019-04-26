@@ -1,8 +1,21 @@
 import numpy as np
 from librispect.features.spectrogram import slicing_window, spect_maker
-
+from utils import split_validation
 
 class spect_predict_maker:
+    '''
+    The Class spect_predict_maker contains a helper function and
+     a generator that returns batches of (term, p_term, labels) tuples 
+     to feed into cpc_model.
+
+    Functions:
+        __init__: a initializer of class, pass in hparams, specify terms, 
+                step and window size, and initialize spect_maker
+        batch_per_epoch: checks if batch size can be evenly split for one epoch
+        batch_iter: return a generator, takes in path_list and returns
+                  the converted numpy array from wav
+
+    '''
     def __init__(self, hparams, terms=4, predict_terms=4, step_size=1):
         self.hparams = hparams
         self.terms = terms
@@ -14,10 +27,12 @@ class spect_predict_maker:
         )
 
     def batch_per_epoch(self, path_list, batch_size):
+        ''' check for batch size in every epoch '''
         assert batch_size % 2 == 0, "half positive, half negative examples"
         return self.spect_maker.batch_ss_per_epoch(path_list, batch_size / 2)
 
     def batch_iter(self, path_list, batch_size):
+        ''' creates positive and negative examples '''
         while True:
             for spect, _ in self.spect_maker.spect_iter(path_list):
                 spect_sliced = slicing_window(spect, self.window_size, self.step_size)
@@ -51,10 +66,4 @@ class spect_predict_maker:
                         idxs, ...
                     ]
 
-    def split_validation(self, path_list, validation_percentage):
-        val_index = int(len(path_list) * (1 - validation_percentage))
-        val = path_list[val_index:]
-        training = path_list[0:(val_index - 1)]
-            
-        return training, val
     
