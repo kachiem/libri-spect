@@ -2,7 +2,7 @@ import numpy as np
 from librispect.features.spectrogram import slicing_window, spect_maker
 from utils import split_validation
 
-class spect_predict_maker:
+class spect_predict_maker(spect_maker):
     '''
     The Class spect_predict_maker contains a helper function and
      a generator that returns batches of (term, p_term, labels) tuples 
@@ -27,12 +27,19 @@ class spect_predict_maker:
         )
 
     def batch_per_epoch(self, path_list, batch_size):
-        ''' check for batch size in every epoch '''
+
+        ''' Check for even batch size in every epoch. '''
+
         assert batch_size % 2 == 0, "half positive, half negative examples"
         return self.spect_maker.batch_ss_per_epoch(path_list, batch_size / 2)
 
     def batch_iter(self, path_list, batch_size):
-        ''' creates positive and negative examples '''
+
+        ''' 
+        Creates positive and negative examples for one batch.
+        Yields term_batch, p_term batch, and labels.
+        '''
+
         while True:
             for spect, _ in self.spect_maker.spect_iter(path_list):
                 spect_sliced = slicing_window(spect, self.window_size, self.step_size)
