@@ -24,7 +24,7 @@ def test_spect_predict_maker():
     pred_spect = test_spect_predict_maker.batch_iter(path_list, 2)
 
     # term_batch, pterm_batch, labels, idxs
-    batch_size = batch_ss_per_epoch(pred_spect, 32);  # turn batch_set into param for epoch
+    batch_size = test_spect_predict_maker.batch_ss_per_epoch(pred_spect, 32)  # turn batch_set into param for epoch
     # if (actual batch_per_epoch(batch_size) == expected batch_size)
     if batch_size % 2 == 0:  # expected batch size:
         # run batch_per_epoch? then create training/val sets
