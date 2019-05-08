@@ -1,21 +1,23 @@
 import numpy as np
 from librispect.features.spectrogram import slicing_window, spect_maker
-from utils import split_validation
+from librispect.utils import split_validation
+
 
 class spect_predict_maker(spect_maker):
     '''
     The Class spect_predict_maker contains a helper function and
-     a generator that returns batches of (term, p_term, labels) tuples 
+     a generator that returns batches of (term, p_term, labels) tuples
      to feed into cpc_model.
 
     Functions:
-        __init__: a initializer of class, pass in hparams, specify terms, 
+        __init__: a initializer of class, pass in hparams, specify terms,
                 step and window size, and initialize spect_maker
         batch_per_epoch: checks if batch size can be evenly split for one epoch
         batch_iter: return a generator, takes in path_list and returns
                   the converted numpy array from wav
 
     '''
+
     def __init__(self, hparams, terms=4, predict_terms=4, step_size=1):
         self.hparams = hparams
         self.terms = terms
@@ -44,7 +46,7 @@ class spect_predict_maker(spect_maker):
             for spect, _ in self.spect_maker.spect_iter(path_list):
                 spect_sliced = slicing_window(spect, self.window_size, self.step_size)
                 x_terms = spect_sliced[..., : self.terms]
-                x_pterms = spect_sliced[..., -self.predict_terms :]
+                x_pterms = spect_sliced[..., -self.predict_terms:]
                 neg_terms = np.random.permutation(x_terms)
                 neg_pterms = np.random.permutation(x_pterms)
 
@@ -72,5 +74,3 @@ class spect_predict_maker(spect_maker):
                     yield [term_batch[idxs, ...], pterm_batch[idxs, ...]], labels[
                         idxs, ...
                     ]
-
-    
