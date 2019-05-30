@@ -96,6 +96,7 @@ def test_batch_ss_iter(samples, window_size, step_size, batch_size):
     if samples:
         path_list = path_list[:samples]
     steps_per_epoch = sm.batch_ss_per_epoch(path_list, batch_size)
+    assert isinstance(steps_per_epoch, int)
     assert steps_per_epoch > 0, steps_per_epoch
     for i, (spect_batch, stft_batch) in enumerate(
         sm.batch_iter(path_list, batch_size, False)

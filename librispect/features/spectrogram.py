@@ -182,9 +182,9 @@ class spect_maker:
         # calculate number of batches per epoch
         num_batches = 0
         for stft in self.stft_iter(path_list):
-            num_batches += np.ceil(
+            num_batches += int(np.ceil(
                 ((stft.shape[-1] - self.window_size + 1) / self.step_size) / batch_size
-            )
+            ))
         return num_batches
 
     def wav_iter(self, path_list):
