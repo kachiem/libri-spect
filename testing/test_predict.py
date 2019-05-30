@@ -1,6 +1,5 @@
 import librispect as lspct
 from librispect.features import predict
-import glob
 from librispect.utils import split_validation
 
 SPECT_HEIGHT = 2048

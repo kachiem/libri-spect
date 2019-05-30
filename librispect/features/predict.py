@@ -39,36 +39,36 @@ class spect_predict_maker(spect_maker):
         Creates positive and negative examples for one batch.
         Yields term_batch, p_term batch, and labels.
         '''
+        while True:
+            for spect, _ in self.spect_maker.spect_iter(path_list):
+                spect_sliced = slicing_window(
+                    spect, self.window_size, self.step_size)
+                x_terms = spect_sliced[..., : self.terms]
+                x_pterms = spect_sliced[..., -self.predict_terms:]
+                neg_terms = np.random.permutation(x_terms)
+                neg_pterms = np.random.permutation(x_pterms)
 
-        for spect, _ in self.spect_maker.spect_iter(path_list):
-            spect_sliced = slicing_window(
-                spect, self.window_size, self.step_size)
-            x_terms = spect_sliced[..., : self.terms]
-            x_pterms = spect_sliced[..., -self.predict_terms:]
-            neg_terms = np.random.permutation(x_terms)
-            neg_pterms = np.random.permutation(x_pterms)
-
-            num_batches = np.ceil(len(spect_sliced) / (batch_size / 2))
-            for x_term_batch, x_pterm_batch, neg_term_batch, neg_pterm_batch in zip(
-                *[
-                    np.array_split(sliced, num_batches)
-                    for sliced in [x_terms, x_pterms, neg_terms, neg_pterms]
-                ]
-            ):
-                    # keras likes time to be dimension 1
-                term_batch = np.transpose(
-                    np.concatenate((x_term_batch, neg_term_batch)), (0, 2, 1)
-                )
-                pterm_batch = np.transpose(
-                    np.concatenate((x_pterm_batch, neg_pterm_batch)), (0, 2, 1)
-                )
-                labels = np.concatenate(
-                    (
-                        np.ones(x_term_batch.shape[0]),
-                        np.zeros(neg_term_batch.shape[0]),
+                num_batches = np.ceil(len(spect_sliced) / (batch_size / 2))
+                for x_term_batch, x_pterm_batch, neg_term_batch, neg_pterm_batch in zip(
+                    *[
+                        np.array_split(sliced, num_batches)
+                        for sliced in [x_terms, x_pterms, neg_terms, neg_pterms]
+                    ]
+                ):
+                        # keras likes time to be dimension 1
+                    term_batch = np.transpose(
+                        np.concatenate((x_term_batch, neg_term_batch)), (0, 2, 1)
                     )
-                )
-                idxs = np.random.permutation(labels.shape[0])
-                yield [term_batch[idxs, ...], pterm_batch[idxs, ...]], labels[
-                    idxs, ...
-                ]
+                    pterm_batch = np.transpose(
+                        np.concatenate((x_pterm_batch, neg_pterm_batch)), (0, 2, 1)
+                    )
+                    labels = np.concatenate(
+                        (
+                            np.ones(x_term_batch.shape[0]),
+                            np.zeros(neg_term_batch.shape[0]),
+                        )
+                    )
+                    idxs = np.random.permutation(labels.shape[0])
+                    yield [term_batch[idxs, ...], pterm_batch[idxs, ...]], labels[
+                        idxs, ...
+                    ]
