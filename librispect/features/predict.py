@@ -39,6 +39,7 @@ class spect_predict_maker(spect_maker):
         Creates positive and negative examples for one batch.
         Yields term_batch, p_term batch, and labels.
         '''
+
         while True:
             for spect, _ in self.spect_maker.spect_iter(path_list):
                 spect_sliced = slicing_window(
@@ -69,6 +70,7 @@ class spect_predict_maker(spect_maker):
                         )
                     )
                 
+
                 idxs = np.random.permutation(labels.shape[0])
                 yield [term_batch[idxs, ...], pterm_batch[idxs, ...]], labels[
                     idxs, ...
