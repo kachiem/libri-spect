@@ -68,7 +68,8 @@ class spect_predict_maker(spect_maker):
                             np.zeros(neg_term_batch.shape[0]),
                         )
                     )
-                    idxs = np.random.permutation(labels.shape[0])
-                    yield [term_batch[idxs, ...], pterm_batch[idxs, ...]], labels[
-                        idxs, ...
-                    ]
+                
+                idxs = np.random.permutation(labels.shape[0])
+                yield [term_batch[idxs, ...], pterm_batch[idxs, ...]], labels[
+                    idxs, ...
+                ]

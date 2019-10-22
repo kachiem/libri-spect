@@ -1,5 +1,9 @@
 import librispect as lspct
-from librispect.features import predict
+import glob
+import librosa
+import numpy as np
+import pytest
+from librispect.features import predict, spectrogram
 from librispect.utils import split_validation
 
 SPECT_HEIGHT = 2048
